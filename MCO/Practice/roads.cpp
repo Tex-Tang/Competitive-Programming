@@ -16,59 +16,10 @@ vector<edge> red_edges;
 vector<edge> special_edges;
 vector<edge> blue_edges;
 vector<int> visited;
-vector<vector< pair<int,long long>>> result_red;
-vector<vector< pair<int,long long>>> result_blue;
-
 vector<int> largest;
 vector<int> parent;
 vector<int> ranks;
 vector<vector< pair<int,long long>>> result;
-vector <int> color;
-vector <pair<int,int>> parents;
-int cycle_start,cycle_end;
-
-
-bool dfs(int v){
-  color[v] = 1;
-  for(pair<int,int> p: result[v]){
-    int u = p.first;
-    if(u != parents[v].first){
-      if(color[u] == 0){
-        parents[u] = make_pair(v,p.second);
-        if(dfs(u)){
-          return true;
-        }
-      }else if(color[u] == 1){
-        cycle_start = u;
-        cycle_end = v;
-        parents[u] = make_pair(v,p.second);
-        return true;
-      }
-    }
-  }
-  color[v] = 2;
-  return false;
-}
-
-long long get_highest_cost_edge(){
-  color.assign(N + 1, 0);
-  parents.assign(N + 1, make_pair(-1,-1));
-  cycle_start = -1;
-  for(int i = 1;i <= N;i++){
-    if(color[i] == 0 && dfs(i)) break;
-  }
-  if(cycle_start == -1) return -1;
-  else{
-    long long maxm = 0;
-    int u = cycle_start;
-    do{
-      pair<int,long long> v = parents[u];
-      maxm = max(maxm, v.second);
-      u = v.first;
-    }while(u != cycle_start);
-    return maxm;
-  }
-}
 
 void dfs2(int u){
    for(pair<int,int> p: result[u]){
